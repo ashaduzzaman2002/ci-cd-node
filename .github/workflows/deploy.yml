@@ -46,6 +46,10 @@ jobs:
           # Navigate to app directory
           cd /ci-cd/ci-cd-node/
 
+          ls
+
+          pwd
+
           # Pull latest code
           git pull origin master
 
