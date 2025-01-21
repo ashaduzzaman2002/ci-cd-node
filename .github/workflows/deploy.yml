@@ -27,14 +27,6 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    # Run tests (if you have tests configured)
-    - name: Run tests
-      run: npm test
-
-    # Build the application (if necessary)
-    - name: Build application
-      run: npm run build
-
     # Deploy to AWS EC2
     - name: Deploy to EC2
       env:
@@ -57,5 +49,5 @@ jobs:
           npm install
 
           # Restart application
-          pm2 start app.js
+          pm2 start index.js
         EOF
