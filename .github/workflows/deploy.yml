@@ -44,7 +44,7 @@ jobs:
           pm2 stop all || true
           
           # Navigate to app directory
-          cd /ci-cd/ci-cd-node/
+          cd /home/ubuntu/ci-cd/ci-cd-node
 
           ls
 
