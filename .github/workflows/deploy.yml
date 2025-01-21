@@ -1,4 +1,33 @@
-# Deploy to EC2
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Set up Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18' # Specify your Node.js version
+
+    # Install dependencies
+    - name: Install dependencies
+      run: npm install
+
+    # Deploy to EC2
 - name: Deploy to EC2
   env:
     HOST: ${{ secrets.EC2_HOST }}
@@ -24,8 +53,9 @@
 
       # Install dependencies and restart the application
       npm install
-      pm2 restart index.js || pm2 start index.js
+      pm2 restart app.js || pm2 start app.js
     EOF
 
     # Remove the private key file after use
     rm private_key.pem
+
