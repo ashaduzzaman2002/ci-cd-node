@@ -1,0 +1,61 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main # Trigger on push to the main branch
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Set up Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.19.1' # Specify your Node.js version
+
+    # Install dependencies
+    - name: Install dependencies
+      run: npm install
+
+    # Run tests (if you have tests configured)
+    - name: Run tests
+      run: npm test
+
+    # Build the application (if necessary)
+    - name: Build application
+      run: npm run build
+
+    # Deploy to AWS EC2
+    - name: Deploy to EC2
+      env:
+        HOST: ${{ secrets.EC2_HOST }}
+        USER: ${{ secrets.EC2_USER }}
+        KEY: ${{ secrets.EC2_KEY }}
+      run: |
+        echo "Deploying application to EC2..."
+        ssh -o "StrictHostKeyChecking=no" -i "${KEY}" ${USER}@${HOST} << 'EOF'
+          # Stop existing app if running
+          pm2 stop all || true
+          
+          # Navigate to app directory
+          cd /path/to/your/app
+
+          # Pull latest code
+          git pull origin main
+
+          # Install dependencies
+          npm install
+
+          # Restart application
+          pm2 start app.js
+        EOF
