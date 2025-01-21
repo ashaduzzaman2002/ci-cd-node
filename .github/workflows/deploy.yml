@@ -3,10 +3,10 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main # Trigger on push to the main branch
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   build-and-deploy:
@@ -48,10 +48,10 @@ jobs:
           pm2 stop all || true
           
           # Navigate to app directory
-          cd /path/to/your/app
+          cd /ci-cd/ci-cd-node/
 
           # Pull latest code
-          git pull origin main
+          git pull origin master
 
           # Install dependencies
           npm install
