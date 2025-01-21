@@ -19,9 +19,9 @@ jobs:
 
     # Set up Node.js
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
-        node-version: '18.19.1' # Specify your Node.js version
+        node-version: '18' # Specify your Node.js version
 
     # Install dependencies
     - name: Install dependencies
@@ -36,18 +36,5 @@ jobs:
       run: |
         echo "Deploying application to EC2..."
         ssh -o "StrictHostKeyChecking=no" -i "${KEY}" ${USER}@${HOST} << 'EOF'
-          # Stop existing app if running
-          pm2 stop all || true
-          
-          # Navigate to app directory
-          cd /ci-cd/ci-cd-node/
-
-          # Pull latest code
-          git pull origin master
-
-          # Install dependencies
-          npm install
-
-          # Restart application
-          pm2 start index.js
+         mkdir -p /home/ubuntu/abcef
         EOF
