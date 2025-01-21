@@ -35,6 +35,9 @@ jobs:
         KEY: ${{ secrets.EC2_KEY }}
       run: |
         echo "Deploying application to EC2..."
-        ssh -o "StrictHostKeyChecking=no" -i "${KEY}" ${USER}@${HOST} << 'EOF'
-         mkdir -p /home/ubuntu/abcef
+
+        echo "${{ secrets.EC2_KEY }}" > private_key.pem
+        chmod 600 private_key.pem
+        ssh -o "StrictHostKeyChecking=no" -i private_key.pem ${USER}@${HOST} << 'EOF'
+        mkdir -p /home/ubuntu/abcef
         EOF
