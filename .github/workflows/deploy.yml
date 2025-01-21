@@ -28,34 +28,34 @@ jobs:
       run: npm install
 
     # Deploy to EC2
-- name: Deploy to EC2
-  env:
-    HOST: ${{ secrets.EC2_HOST }}
-    USER: ${{ secrets.EC2_USER }}
-    KEY: ${{ secrets.EC2_KEY }}
-  run: |
-    echo "Deploying application to EC2..."
+    - name: Deploy to EC2
+      env:
+        HOST: ${{ secrets.EC2_HOST }}
+        USER: ${{ secrets.EC2_USER }}
+        KEY: ${{ secrets.EC2_KEY }}
+      run: |
+        echo "Deploying application to EC2..."
 
-    # Create a temporary file for the private key
-    echo "${{ secrets.EC2_KEY }}" > private_key.pem
-    chmod 600 private_key.pem  # Make the key file read-only
+        # Create a temporary file for the private key
+        echo "${{ secrets.EC2_KEY }}" > private_key.pem
+        chmod 600 private_key.pem  # Make the key file read-only
 
-    # SSH into EC2 and execute commands
-    ssh -o "StrictHostKeyChecking=no" -i private_key.pem ${USER}@${HOST} << 'EOF'
-      # Add the repository directory as a safe directory for Git
-      git config --global --add safe.directory /home/ubuntu/ci-cd/ci-cd-node
+        # SSH into EC2 and execute commands
+        ssh -o "StrictHostKeyChecking=no" -i private_key.pem ${USER}@${HOST} << 'EOF'
+          # Add the repository directory as a safe directory for Git
+          git config --global --add safe.directory /home/ubuntu/ci-cd/ci-cd-node
 
-      # Navigate to the application folder
-      cd /home/ubuntu/ci-cd/ci-cd-node || exit
+          # Navigate to the application folder
+          cd /home/ubuntu/ci-cd/ci-cd-node || exit
 
-      # Pull the latest changes
-      git pull origin master
+          # Pull the latest changes
+          git pull origin master
 
-      # Install dependencies and restart the application
-      npm install
-      pm2 restart app.js || pm2 start app.js
-    EOF
+          # Install dependencies and restart the application
+          npm install
+          pm2 restart app.js || pm2 start app.js
+        EOF
 
-    # Remove the private key file after use
-    rm private_key.pem
+        # Remove the private key file after use
+        rm private_key.pem
 
