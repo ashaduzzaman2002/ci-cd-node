@@ -37,7 +37,21 @@ jobs:
         echo "Deploying application to EC2..."
 
         echo "${{ secrets.EC2_KEY }}" > private_key.pem
-        chmod 600 private_key.pem
+        chmod 600 private_key.pem  # Make the key file read-only
+
         ssh -o "StrictHostKeyChecking=no" -i private_key.pem ${USER}@${HOST} << 'EOF'
-        mkdir -p /home/ubuntu/abcef
+          # Stop existing app if running
+          pm2 stop all || true
+          
+          # Navigate to app directory
+          cd /ci-cd/ci-cd-node/
+
+          # Pull latest code
+          git pull origin master
+
+          # Install dependencies
+          npm install
+
+          # Restart application
+          pm2 start index.js
         EOF
