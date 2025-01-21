@@ -3,10 +3,10 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - master
+      - prod
   pull_request:
     branches:
-      - master
+      - prod
 
 jobs:
   build-and-deploy:
@@ -56,7 +56,7 @@ jobs:
           sudo rm -f .git/index.lock .git/FETCH_HEAD
 
           # Pull the latest changes
-          git pull origin master
+          git pull origin prod
 
           # Install dependencies and restart the application
           npm install
