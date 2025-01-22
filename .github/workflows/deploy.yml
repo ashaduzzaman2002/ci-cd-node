@@ -52,8 +52,11 @@ jobs:
           # Navigate to the application folder
           cd /home/ubuntu/ci-cd/ci-cd-node || exit
 
+          ls
+
           # Remove stale Git locks
           sudo rm -f .git/index.lock .git/FETCH_HEAD
+          
 
           # Pull the latest changes
           git pull origin prod
