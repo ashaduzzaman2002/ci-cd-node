@@ -63,7 +63,7 @@ jobs:
 
           # Install dependencies and restart the application
           npm install
-          pm2 restart index.js || pm2 start index.js
+          pm2 restart 0 || pm2 start index.js
         EOF
 
         # Remove the private key file after use
