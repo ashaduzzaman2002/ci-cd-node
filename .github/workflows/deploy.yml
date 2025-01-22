@@ -55,7 +55,7 @@ jobs:
           # Remove stale Git locks
           sudo rm -f .git/index.lock .git/FETCH_HEAD
           
-
+````````````` `````````````````````````                                                                                                             ````````````````
           # Pull the latest changes
           git stash
           git pull origin prod
